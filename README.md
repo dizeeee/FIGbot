@@ -13,3 +13,7 @@ First things first, get FIGlet installed. You should check your distro's repos f
 Python is bundled with virtually every distro in existance, so I'm not going to say much more than to type `python3` into a console and checking the version number it gives.
 
 discord.py has installation instructions on its Github page, however all you really need to know is that `python3 -m pip install -U discord.py` installs everything you need for this bot, and `python3 -m pip install -U discord.py[voice]` installs the additional voice library.
+
+To start the bot, simply navigate to the bot's directory and type `python3 bot.py`. After that, enter the token of your bot account and everything should work!
+
+(As a small footnote, please don't remove my name and the donation address from the help command. I know that you are totally allowed to change anything you want under this licensing, but I would like to keep my username attatched to the bot. IDC if you change or add anything else though.)
