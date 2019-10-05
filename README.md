@@ -1,19 +1,52 @@
 # FIGbot
-A Discord bot that prints ASCII text using FIGlet.
+Discord bot for ASCII text art with figlet. Now written in node.js and slightly improved
 
 ## Requirements
-- [FIGlet](http://www.figlet.org/)
-- [Python 3.5+](https://www.python.org/)
-- [discord.py](https://github.com/Rapptz/discord.py)
-- A GNU/Linux distro of your choice
+* latest version of npm and node
+  * `sudo apt-get install curl`
+  * `curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -`
+  * `sudo apt-get install nodejs`
 
-## Setup
-First things first, get FIGlet installed. You should check your distro's repos for a packaged version first, otherwise, you can find the source code [here.](http://www.figlet.org/) To compile FIGlet, simply download the source in a directory of your choice open a command prompt and type `make`, then `sudo make install`. You can test FIGlet by typing `figlet test`, you should get an ASCII string that says test.
+* Required npm packages
+	* discord.js
+	* figlet
 
-Python is bundled with virtually every distro in existance, so I'm not going to say much more than to type `python3` into a console and checking the version number it gives.
+## Startup
+* `cd FIGbot` | cd to the directory
 
-discord.py has installation instructions on its Github page, however all you really need to know is that `python3 -m pip install -U discord.py` installs everything you need for this bot, and `python3 -m pip install -U discord.py[voice]` installs the additional voice library.
+* `sudo npm install` | to install the required npm packages
 
-To start the bot, simply navigate to the bot's directory and type `python3 bot.py`. After that, enter the token of your bot account and everything should work!
+* `sudo npm start index.js` | To start for the first time
 
-Hopefully this bot helps others learn basic Discord.py skills!
+**Note that the first time you will get an error, stating**
+>Config not found, creating...
+Please set your token in config.json!
+(node:78) UnhandledPromiseRejectionWarning: Error: An invalid token was provided....
+
+*This is fine*, as the first two lines say, the config file was generated for you. In there you must paste your bot token in the `token` section of the generated `config.json` and optionally change the command prefix (the symbol to activate the bot commands).
+
+After inputting your token, rereun `sudo npm start index.js` to start the bot and test it.
+
+## Running as a Service
+* You must create an unprivileged account for the node scripts to run under to avoid potential hassle when running with systemd.
+
+Create the file `/etc/systemd/system/fig-bot.service` and input the following
+> [Unit]
+> Description=ORRERbot for Discord
+>
+> After=network.target
+>
+>[Service]
+>
+>Type=simple
+>
+>User=botuser
+>
+>ExecStart=/usr/bin/npm --prefix=/home/botuser/FIGbot/  start /home/botuser/FIGbot/index.js
+>
+> Restart=always
+>
+> RestartSec=3
+>
+>[Install]
+>WantedBy=multi-user.target
