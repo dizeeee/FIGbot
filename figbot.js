@@ -5,21 +5,25 @@ const client = new discord.Client();
 
 module.exports = function(command, args, message, client, config){
   if (command == 'fig'){
-    if (args[0] != undefined){ // If !fig is sent with something in the first array slot (text to be processed), move on
-      if (args[1] != undefined){ // If there is something in the first slot, check to see if there is something in the second (the font)
-        var font = args[1].charAt(0).toUpperCase() + args[1].substring(1).toLowerCase(); // Set the specified font in the variable and format
-        figlet.text(args[0], font, function(err, data) {
+    console.log(args);
+    if (args[0] != undefined){ // Checks for something to work with
+      if (args[0].startsWith('#')){ // Checks to see if the first argument is a font (string starting with #)
+        var font = args[0].substring(1); // If it does, set the specified font in the variable
+        font = font.charAt(0).toUpperCase() + font.substring(1).toLowerCase(); // And make sure its capitalized and the rest is lowercase
+        console.log(font);
+        msg = args.slice(1).join(' '); // All array items after the first one (specified font) are concatenated for figlet
+        figlet.text(msg, font, function(err, data) {
           if (err) {
             console.log('Something went wrong...');
             console.dir(err);
-            message.channel.send(`There is no font named "${font}"!`);
+            message.channel.send(`"${font}" is not a valid font!`);
             return;
           }
           message.channel.send('```' + data + '```');
         });
-      } else { // If there is text to be processed but no font specified, set the standard font and move on
-        var font = 'Standard'
-        figlet.text(args[0], font, function(err, data) {
+      } else { // If the first argument is not a font, its text to be printed in the default font
+        msg = args.slice(0).join(' '); // No specified font, so every array element is concatenated because its all text to be processed
+        figlet.text(msg, function(err, data) { // For this case, we dont need the second argument which is the font specifier, just a callback
           if (err) {
             console.log('Something went wrong...');
             console.dir(err);
@@ -28,8 +32,8 @@ module.exports = function(command, args, message, client, config){
           message.channel.send('```' + data + '```');
         });
       }
-    } else { // If there is nothing in the first array slot (text to be processed) tell the user to input text
-      message.channel.send('You must specify text to be printed!');
+    } else { // If no text is specified after !fig, even to be displayed with no custom font
+      message.channel.send('You must at least give me something to say!');
     }
   } else if (command == 'fighelp'){
       if (args[0] != undefined){
@@ -52,13 +56,15 @@ module.exports = function(command, args, message, client, config){
           .setTitle('FIGBot Help')
           .setColor(0x03e8fc); // Light Blue
           embed
-          .setDescription('A bot that uses figlet to make text art. Now supporting font selection.')
+          .setDescription('A bot that uses figlet to make text art. Now supporting font selection and whitespace!.')
           .addField('Commands','----------------------------------------------------------')
           .addField('!fighelp','Displays this dialogue')
           .addField('!fighelp fonts','Displays a list of fonts for use with the main command')
-          .addField('!fig (word) (font)','Makes ASCII text out of a word or sentence with the choice of font. If none is specified, figbot will use the default font.')
-          .setURL('https://github.com/Dizeeee/FIGbot')
+          .addField('!fig #(font) <your text here>','Makes ASCII text out of a word or sentence with the choice of font. If none is specified, figbot will use the default font.')
           .addBlankField()
+          .addField('Example','!fig #computer hello world!')
+          .addBlankField()
+          .setURL('https://github.com/Dizeeee/FIGbot')
           .setFooter('Original bot in Python by Dizee. Ported to nodejs and improved by trevor229.')
           message.channel.send({embed});
       }
