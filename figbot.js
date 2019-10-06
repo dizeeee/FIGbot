@@ -5,14 +5,14 @@ const client = new discord.Client();
 
 module.exports = function(command, args, message, client, config){
   if (command == 'fig'){
-    console.log(args);
     if (args[0] != undefined){ // If !fig is sent with something in the first array slot (text to be processed), move on
       if (args[1] != undefined){ // If there is something in the first slot, check to see if there is something in the second (the font)
-        var font = args[1] // Set the user specified font in the variable
+        var font = args[1].charAt(0).toUpperCase() + args[1].substring(1).toLowerCase(); // Set the specified font in the variable and format
         figlet.text(args[0], font, function(err, data) {
           if (err) {
             console.log('Something went wrong...');
             console.dir(err);
+            message.channel.send(`There is no font named "${font}"!`);
             return;
           }
           message.channel.send('```' + data + '```');

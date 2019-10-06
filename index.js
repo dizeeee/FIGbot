@@ -26,7 +26,7 @@ client.on('ready', () => {
   client.user.setPresence({ game: { name: '!fighelp' }, status: 'online' })
     .then(console.log('ID: ' + client.user.id))
     .then(console.log('Username: ' + client.user.username))
-    .then(console.log('Discrim.:' + client.user.discriminator))
+    .then(console.log('Discrim.: ' + client.user.discriminator))
     .then(console.log('Avatar: ' + client.user.avatar))
     .catch(console.error)
 });
