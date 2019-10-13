@@ -2,7 +2,6 @@
 const discord = require('discord.js');
 const figlet = require('figlet');
 const client = new discord.Client();
-var APIError;
 
 module.exports = function(command, args, message, client, config){
   if (command == 'fig'){
