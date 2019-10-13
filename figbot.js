@@ -20,9 +20,10 @@ module.exports = function(command, args, message, client, config){
             message.channel.send(`"${font}" is not a valid font!`);
             return;
           }
-          message.channel.send('```' + data + '```').catch(console.error);
-          if (err != undefined){
-            message.channel.send(err);
+          if (data.length <= 2000){
+            message.channel.send('```' + data + '```').catch(console.error);
+          } else if (data.length >= 2000){
+            message.channel.send('Sorry, the output of FIGlet creates more than 2000 characters!').catch(console.error);
           }
         });
       } else { // If the first argument is not a font, its text to be printed in the default font
