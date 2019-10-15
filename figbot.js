@@ -19,7 +19,11 @@ module.exports = function(command, args, message, client, config){
             message.channel.send(`"${font}" is not a valid font!`);
             return;
           }
-          message.channel.send('```' + data + '```');
+          if (data.length <= 2000){
+            message.channel.send('```' + data + '```').catch(console.error);
+          } else if (data.length >= 2000){
+            message.channel.send('Sorry, the output of FIGlet creates more than 2000 characters!').catch(console.error);
+          }
         });
       } else { // If the first argument is not a font, its text to be printed in the default font
         msg = args.slice(0).join(' '); // No specified font, so every array element is concatenated because its all text to be processed
@@ -29,7 +33,7 @@ module.exports = function(command, args, message, client, config){
             console.dir(err);
             return;
           }
-          message.channel.send('```' + data + '```');
+          message.channel.send('```' + data + '```').catch(console.error);
         });
       }
     } else { // If no text is specified after !fig, even to be displayed with no custom font
@@ -56,7 +60,7 @@ module.exports = function(command, args, message, client, config){
           .setTitle('FIGBot Help')
           .setColor(0x03e8fc); // Light Blue
           embed
-          .setDescription('A bot that uses figlet to make text art. Now supporting font selection and whitespace!.')
+          .setDescription('A bot that uses figlet to make text art. Now supporting font selection and whitespace!')
           .addField('Commands','----------------------------------------------------------')
           .addField('!fighelp','Displays this dialogue')
           .addField('!fighelp fonts','Displays a list of fonts for use with the main command')
